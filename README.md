@@ -6,6 +6,8 @@
 
 Páginas, tempo e ritmo de cada dia de leitura — e um status pronto para compartilhar nos stories, no estilo do Strava.
 
+*Feito com amor para a Alice* 🧡
+
 ![Expo](https://img.shields.io/badge/Expo-SDK%2058-000020?logo=expo&logoColor=white)
 ![React Native](https://img.shields.io/badge/React%20Native-0.88-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
@@ -97,5 +99,5 @@ src/
 ---
 
 <div align="center">
-Feito com 🧡 por <a href="https://github.com/daviPeter07">Davi Peterson</a>
+Feito com 🧡 para a Alice, por <a href="https://github.com/daviPeter07">Davi Peterson</a>
 </div>
