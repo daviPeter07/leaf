@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { ActionButton } from '@/components/app/action-button';
 import { FormField } from '@/components/app/form-field';
+import { NumberField } from '@/components/app/number-field';
 import type { AddBookInput, Book } from '@/books/types';
 import { bookSchema, type BookFormData } from '@/books/utils/zod';
 
@@ -71,13 +72,14 @@ export function BookForm({ book, onSubmit, submitLabel }: BookFormProps) {
             placeholder="Ex: 148"
           />
         </View>
-        <FormField
+        <NumberField
           label="Página atual"
+          hint="0 se ainda não começou"
           value={currentPage}
           onChangeText={setCurrentPage}
-          keyboardType="number-pad"
           error={errors.currentPage}
-          placeholder="0 se ainda não começou"
+          max={Number.parseInt(totalPages, 10) || undefined}
+          quickSteps={[10, 20]}
         />
       </View>
       <ActionButton label={submitLabel} onPress={submit} />
