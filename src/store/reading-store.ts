@@ -32,7 +32,7 @@ export const useReadingStore = create<ReadingState>()(
       themePreference: 'system',
       books: [],
       sessions: [],
-      addBook: ({ title, author, totalPages, chapters, currentPage = 0 }) => {
+      addBook: ({ title, author, totalPages, chapters, currentPage = 0, coverUrl }) => {
         const colors = COVER_PAIRS[get().books.length % COVER_PAIRS.length];
         const safeCurrentPage = Math.min(Math.max(0, currentPage), totalPages);
         const progress = safeCurrentPage / totalPages;
@@ -48,6 +48,7 @@ export const useReadingStore = create<ReadingState>()(
           currentChapter,
           coverColor: colors.coverColor,
           accentColor: colors.accentColor,
+          coverUrl,
           startedAt: new Date().toISOString(),
           finishedAt: safeCurrentPage === totalPages ? new Date().toISOString() : undefined,
         };

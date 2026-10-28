@@ -11,14 +11,16 @@ type FormErrors = Partial<Record<keyof BookFormData, string>>;
 
 type BookFormProps = {
   book?: Book;
+  // Prefill for a new book, e.g. from the book search.
+  initialValues?: Partial<AddBookInput>;
   onSubmit: (data: AddBookInput) => void;
   submitLabel: string;
 };
 
-export function BookForm({ book, onSubmit, submitLabel }: BookFormProps) {
-  const [title, setTitle] = useState(book?.title ?? '');
-  const [author, setAuthor] = useState(book?.author ?? '');
-  const [totalPages, setTotalPages] = useState(book?.totalPages.toString() ?? '');
+export function BookForm({ book, initialValues, onSubmit, submitLabel }: BookFormProps) {
+  const [title, setTitle] = useState(book?.title ?? initialValues?.title ?? '');
+  const [author, setAuthor] = useState(book?.author ?? initialValues?.author ?? '');
+  const [totalPages, setTotalPages] = useState(book?.totalPages.toString() ?? initialValues?.totalPages?.toString() ?? '');
   const [chapters, setChapters] = useState(book?.chapters.toString() ?? '');
   const [currentPage, setCurrentPage] = useState(book?.currentPage.toString() ?? '0');
   const [errors, setErrors] = useState<FormErrors>({});

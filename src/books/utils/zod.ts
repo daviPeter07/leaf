@@ -12,3 +12,16 @@ export const bookSchema = z.object({
 });
 
 export type BookFormData = z.infer<typeof bookSchema>;
+
+// Open Library's search API is marked experimental, so the response is validated before use.
+export const openLibrarySearchSchema = z.object({
+  docs: z.array(
+    z.object({
+      key: z.string(),
+      title: z.string(),
+      author_name: z.array(z.string()).nullish(),
+      number_of_pages_median: z.number().nullish(),
+      cover_i: z.number().nullish(),
+    })
+  ),
+});
