@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { BookOpen, ChevronRight, Flame } from 'lucide-react-native';
+import { BookOpen, Flame, Plus } from 'lucide-react-native';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -54,14 +54,15 @@ export default function HomeScreen() {
                 <>
                   <View style={styles.cardHeader}>
                     <Text style={styles.cardTitle}>Lendo agora</Text>
-                    <TouchableOpacity
-                      style={styles.link}
-                      onPress={() => router.push({ pathname: '/book/[id]', params: { id: activeBook.id } })}>
-                      <Text style={styles.linkText}>Ver livro</Text>
-                      <ChevronRight size={16} color={colors.accent} />
+                    <TouchableOpacity style={styles.link} onPress={() => router.push('/add-book')}>
+                      <Plus size={16} color={colors.accent} strokeWidth={2.5} />
+                      <Text style={styles.linkText}>Novo livro</Text>
                     </TouchableOpacity>
                   </View>
-                  <BookCard book={activeBook} />
+                  <BookCard
+                    book={activeBook}
+                    onPress={() => router.push({ pathname: '/book/[id]', params: { id: activeBook.id } })}
+                  />
                   <ActionButton
                     label="Registrar leitura"
                     onPress={() => router.push({ pathname: '/log-reading', params: { bookId: activeBook.id } })}

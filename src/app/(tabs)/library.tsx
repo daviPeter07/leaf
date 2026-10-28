@@ -26,8 +26,9 @@ export default function LibraryScreen() {
           title="Biblioteca"
           subtitle={books.length > 0 ? `${reading.length} lendo · ${finished.length} lidos` : undefined}
           accessory={
-            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/add-book')} accessibilityLabel="Adicionar livro">
-              <Plus size={22} color={colors.white} strokeWidth={2.5} />
+            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/add-book')}>
+              <Plus size={18} color={colors.white} strokeWidth={2.5} />
+              <Text style={styles.addButtonText}>Adicionar</Text>
             </TouchableOpacity>
           }
         />
@@ -42,7 +43,13 @@ export default function LibraryScreen() {
           />
         ) : (
           <>
-            <BookSection title="Lendo" books={reading} />
+            <View style={styles.readingGroup}>
+              <BookSection title="Lendo" books={reading} />
+              <TouchableOpacity style={styles.addRow} onPress={() => router.push('/add-book')}>
+                <Plus size={20} color={colors.accent} strokeWidth={2.5} />
+                <Text style={styles.addRowText}>{reading.length > 0 ? 'Adicionar outro livro' : 'Começar um novo livro'}</Text>
+              </TouchableOpacity>
+            </View>
             <BookSection title="Finalizados" books={finished} />
           </>
         )}
@@ -80,12 +87,37 @@ const createStyles = (colors: Palette) =>
       paddingBottom: 32,
     },
     addButton: {
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      width: 40,
-      height: 40,
+      gap: 6,
+      paddingHorizontal: 14,
+      paddingVertical: 9,
       borderRadius: 999,
       backgroundColor: colors.accent,
+    },
+    addButtonText: {
+      color: colors.white,
+      fontSize: 14,
+      fontWeight: '700',
+    },
+    readingGroup: {
+      gap: 8,
+    },
+    addRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+      paddingVertical: 16,
+      borderRadius: 14,
+      borderWidth: 1.5,
+      borderStyle: 'dashed',
+      borderColor: colors.line,
+    },
+    addRowText: {
+      color: colors.accent,
+      fontSize: 15,
+      fontWeight: '600',
     },
     sectionTitle: {
       marginBottom: 4,
