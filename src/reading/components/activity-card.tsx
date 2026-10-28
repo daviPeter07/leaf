@@ -11,13 +11,14 @@ type ActivityCardProps = {
   book?: Book;
   readerName: string;
   session: ReadingSession;
+  divider?: boolean;
 };
 
-export function ActivityCard({ book, readerName, session }: ActivityCardProps) {
+export function ActivityCard({ book, readerName, session, divider = true }: ActivityCardProps) {
   const styles = useThemedStyles(createStyles);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, divider ? styles.divider : undefined]}>
       <View style={styles.header}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{readerName.charAt(0)}</Text>
@@ -47,6 +48,8 @@ const createStyles = (colors: Palette) =>
     card: {
       gap: 12,
       paddingVertical: 18,
+    },
+    divider: {
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderBottomColor: colors.line,
     },

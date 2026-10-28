@@ -53,7 +53,7 @@ const createStyles = (colors: Palette) =>
       gap: 16,
       padding: 18,
       borderRadius: 16,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.background,
     },
     title: {
       color: colors.ink,
