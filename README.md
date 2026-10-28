@@ -27,7 +27,7 @@ Páginas, tempo e ritmo de cada dia de leitura — e um status pronto para compa
 | **Sua semana** | Páginas, tempo e dias lidos de segunda a domingo, com gráfico semanal e sequência de dias seguidos. |
 | **Feed de atividades** | Cada sessão vira um card no estilo Strava: **Páginas · Ritmo · Tempo**, com o ritmo em minutos por página. |
 | **Status para os stories** | Escolha um dia de leitura e gere uma imagem 9:16 com as métricas empilhadas e um ícone de livro — com foto de fundo ou como sticker transparente. |
-| **Tutorial de boas-vindas** | Cinco cards explicam o app no primeiro acesso e não aparecem de novo. |
+| **Tutorial de boas-vindas** | Seis cards explicam o app no primeiro acesso e não aparecem de novo. |
 
 Tudo fica salvo **apenas no aparelho** — sem conta, sem servidor.
 
@@ -72,7 +72,7 @@ Escaneie o QR code com o Expo Go, ou pressione `a` (Android) / `i` (iOS) no term
 src/
 ├── app/                    # Rotas (Expo Router)
 │   ├── _layout.tsx         # Stack raiz, splash e guarda do tutorial
-│   ├── tutorial.tsx        # Onboarding de 5 cards
+│   ├── tutorial.tsx        # Onboarding de 6 cards
 │   ├── (tabs)/             # Início · Biblioteca · Status
 │   ├── book/[id].tsx       # Detalhe do livro e histórico
 │   ├── add-book.tsx        # Modais de cadastro, edição
