@@ -1,10 +1,10 @@
 import { ChevronRight } from 'lucide-react-native';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { BookCover } from '@/components/reading/book-cover';
+import { BookCover } from '@/books/components/book-cover';
 import { ReadingColors } from '@/constants/theme';
-import type { Book } from '@/types/reading';
-import { getBookProgress } from '@/utils/reading';
+import type { Book } from '@/books/types';
+import { getBookProgress } from '@/books/utils/functions';
 
 type BookCardProps = {
   book: Book;

@@ -1,32 +1,7 @@
 import { addDays, format, isToday, isYesterday, parseISO, startOfWeek, subDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import type { Book, ReadingSession } from '@/types/reading';
-
-export type ReadingDay = {
-  key: string;
-  pages: number;
-  minutes: number;
-  sessions: ReadingSession[];
-};
-
-export function createId(value: string) {
-  return `${value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`;
-}
-
-export function getBookProgress(book: Book) {
-  return book.totalPages > 0 ? Math.round((book.currentPage / book.totalPages) * 100) : 0;
-}
-
-export function getBookTotals(bookId: string, sessions: ReadingSession[]) {
-  const bookSessions = sessions.filter((session) => session.bookId === bookId);
-
-  return {
-    sessions: bookSessions,
-    pages: bookSessions.reduce((total, session) => total + session.pagesRead, 0),
-    minutes: bookSessions.reduce((total, session) => total + session.minutesRead, 0),
-  };
-}
+import type { ReadingDay, ReadingSession } from '@/reading/types';
 
 // Day keys use the device's local date, so a late-night reading counts for the day it happened.
 export function getDayKey(date: string | Date) {

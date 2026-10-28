@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { StatRow } from '@/components/app/stat-row';
 import { ReadingColors } from '@/constants/theme';
-import { formatDuration, getWeekSummary } from '@/utils/reading';
+import { formatDuration, getWeekSummary } from '@/reading/utils/functions';
 
 type WeekSummaryProps = {
   summary: ReturnType<typeof getWeekSummary>;

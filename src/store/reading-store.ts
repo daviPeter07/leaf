@@ -3,9 +3,10 @@ import { useSyncExternalStore } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { COVER_PAIRS, INITIAL_BOOKS, INITIAL_SESSIONS } from '@/constants/reading';
-import type { AddBookInput, AddReadingInput, Book, ReadingSession, UpdateBookInput } from '@/types/reading';
-import { createId } from '@/utils/reading';
+import type { AddBookInput, Book, UpdateBookInput } from '@/books/types';
+import { COVER_PAIRS } from '@/books/utils/constants';
+import { createId } from '@/books/utils/functions';
+import type { AddReadingInput, ReadingSession } from '@/reading/types';
 
 type ReadingState = {
   readerName: string;
@@ -25,8 +26,8 @@ export const useReadingStore = create<ReadingState>()(
     (set, get) => ({
       readerName: 'Alice',
       hasSeenTutorial: false,
-      books: INITIAL_BOOKS,
-      sessions: INITIAL_SESSIONS,
+      books: [],
+      sessions: [],
       addBook: ({ title, author, totalPages, chapters, currentPage = 0 }) => {
         const colors = COVER_PAIRS[get().books.length % COVER_PAIRS.length];
         const safeCurrentPage = Math.min(Math.max(0, currentPage), totalPages);

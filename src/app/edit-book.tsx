@@ -4,10 +4,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionButton } from '@/components/app/action-button';
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
-import { BookForm } from '@/components/reading/book-form';
+import { BookForm } from '@/books/components/book-form';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingStore } from '@/store/reading-store';
-import type { AddBookInput } from '@/types/reading';
+import type { AddBookInput } from '@/books/types';
 
 export default function EditBookScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

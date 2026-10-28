@@ -1,23 +1,12 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { z } from 'zod';
 
 import { ActionButton } from '@/components/app/action-button';
-import { FormField } from '@/components/reading/form-field';
-import type { AddBookInput, Book } from '@/types/reading';
+import { FormField } from '@/components/app/form-field';
+import { NumberField } from '@/components/app/number-field';
+import type { AddBookInput, Book } from '@/books/types';
+import { bookSchema, type BookFormData } from '@/books/utils/zod';
 
-const bookSchema = z.object({
-  title: z.string().trim().min(1, 'Informe o título.'),
-  author: z.string().trim().min(1, 'Informe a autora ou autor.'),
-  totalPages: z.coerce.number().int().min(1, 'Informe o total de páginas.'),
-  chapters: z.coerce.number().int().min(1, 'Informe a quantidade de capítulos.'),
-  currentPage: z.coerce.number().int().min(0, 'Página atual inválida.'),
-}).refine((value) => value.currentPage <= value.totalPages, {
-  path: ['currentPage'],
-  message: 'A página atual não pode passar do total.',
-});
-
-type BookFormData = z.infer<typeof bookSchema>;
 type FormErrors = Partial<Record<keyof BookFormData, string>>;
 
 type BookFormProps = {
@@ -83,13 +72,14 @@ export function BookForm({ book, onSubmit, submitLabel }: BookFormProps) {
             placeholder="Ex: 148"
           />
         </View>
-        <FormField
+        <NumberField
           label="Página atual"
+          hint="0 se ainda não começou"
           value={currentPage}
           onChangeText={setCurrentPage}
-          keyboardType="number-pad"
           error={errors.currentPage}
-          placeholder="0 se ainda não começou"
+          max={Number.parseInt(totalPages, 10) || undefined}
+          quickSteps={[10, 20]}
         />
       </View>
       <ActionButton label={submitLabel} onPress={submit} />

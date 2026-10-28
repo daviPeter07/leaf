@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState } from '@/components/app/empty-state';
 import { ScreenHeader } from '@/components/app/screen-header';
-import { BookCard } from '@/components/reading/book-card';
+import { BookCard } from '@/books/components/book-card';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingData } from '@/hooks/use-reading-data';
-import type { Book } from '@/types/reading';
+import type { Book } from '@/books/types';
 
 export default function LibraryScreen() {
   const { books } = useReadingData();

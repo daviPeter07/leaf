@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
-import { BookForm } from '@/components/reading/book-form';
+import { BookForm } from '@/books/components/book-form';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingStore } from '@/store/reading-store';
-import type { AddBookInput } from '@/types/reading';
+import type { AddBookInput } from '@/books/types';
 
 export default function AddBookScreen() {
   const addBook = useReadingStore((state) => state.addBook);

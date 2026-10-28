@@ -2,9 +2,9 @@ import { BookOpen } from 'lucide-react-native';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { ReadingColors } from '@/constants/theme';
-import { formatDuration, formatPace, type ReadingDay } from '@/utils/reading';
-
-export type StickerTemplate = 'photo' | 'light' | 'dark';
+import type { ReadingDay } from '@/reading/types';
+import { formatDuration, formatPace } from '@/reading/utils/functions';
+import type { StickerTemplate } from '@/share/types';
 
 type ShareStickerProps = {
   day: ReadingDay;

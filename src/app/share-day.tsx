@@ -8,18 +8,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
 import { ActionButton } from '@/components/app/action-button';
-import { ShareSticker, type StickerTemplate } from '@/components/reading/share-sticker';
 import { ReadingColors } from '@/constants/theme';
+import { formatDayLabel, getReadingDays } from '@/reading/utils/functions';
+import { ShareSticker } from '@/share/components/share-sticker';
+import type { StickerTemplate } from '@/share/types';
+import { SHARE_BACKGROUND, STICKER_TEMPLATES, STORY_EXPORT_SIZE } from '@/share/utils/constants';
 import { useReadingStore } from '@/store/reading-store';
-import { formatDayLabel, getReadingDays } from '@/utils/reading';
-
-const SHEET_BACKGROUND = '#111114';
-
-const TEMPLATES: { id: StickerTemplate; label: string; background: string; iconColor: string }[] = [
-  { id: 'photo', label: 'Foto', background: '#3A3A42', iconColor: ReadingColors.white },
-  { id: 'light', label: 'Sticker', background: '#26262C', iconColor: ReadingColors.white },
-  { id: 'dark', label: 'Sticker escuro', background: '#E9E9EE', iconColor: ReadingColors.ink },
-];
 
 export default function ShareDayScreen() {
   const { date } = useLocalSearchParams<{ date: string }>();
@@ -30,7 +24,7 @@ export default function ShareDayScreen() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const { width, height } = useWindowDimensions();
   const previewWidth = Math.min(width - 96, ((height - 360) * 9) / 16);
-  const previewBackground = TEMPLATES.find((item) => item.id === template)?.background;
+  const previewBackground = STICKER_TEMPLATES.find((item) => item.id === template)?.background;
 
   async function pickPhoto() {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -86,8 +80,7 @@ export default function ShareDayScreen() {
     const uri = await captureRef(stickerRef, {
       format: 'png',
       quality: 1,
-      width: 1080,
-      height: 1920,
+      ...STORY_EXPORT_SIZE,
     });
 
     await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: 'Compartilhar leitura', UTI: 'public.png' });
@@ -127,7 +120,7 @@ export default function ShareDayScreen() {
 
       <View style={styles.controls}>
         <View style={styles.templates}>
-          {TEMPLATES.map((item) => {
+          {STICKER_TEMPLATES.map((item) => {
             const isSelected = item.id === template;
 
             return (
@@ -176,7 +169,7 @@ export default function ShareDayScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: SHEET_BACKGROUND,
+    backgroundColor: SHARE_BACKGROUND,
   },
   topBar: {
     flexDirection: 'row',
