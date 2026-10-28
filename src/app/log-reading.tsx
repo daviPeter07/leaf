@@ -2,9 +2,10 @@ import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import { BookOpen } from 'lucide-react-native';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BookPicker } from '@/books/components/book-picker';
 import { ActionButton } from '@/components/app/action-button';
 import { EmptyState } from '@/components/app/empty-state';
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
@@ -104,29 +105,8 @@ export default function LogReadingScreen() {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View style={styles.fieldGroup}>
           <Text style={styles.label}>Livro</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bookList}>
-            {books.map((book) => {
-              const isSelected = book.id === bookId;
-
-              return (
-                <TouchableOpacity
-                  key={book.id}
-                  style={[styles.bookPill, isSelected ? styles.bookPillSelected : undefined]}
-                  onPress={() => selectBook(book.id)}>
-                  <Text style={[styles.bookPillText, isSelected ? styles.bookPillTextSelected : undefined]} numberOfLines={1}>
-                    {book.title}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
+          <BookPicker books={books} selectedId={bookId} onSelect={selectBook} />
           {errors.bookId ? <Text style={styles.error}>{errors.bookId}</Text> : null}
-          {selectedBook ? (
-            <Text style={styles.context}>
-              Você parou na página {selectedBook.currentPage} de {selectedBook.totalPages} · capítulo{' '}
-              {selectedBook.currentChapter} de {selectedBook.chapters}
-            </Text>
-          ) : null}
         </View>
 
         <NumberField
@@ -224,34 +204,9 @@ const createStyles = (colors: Palette) =>
       fontSize: 13,
       fontWeight: '600',
     },
-    bookList: {
-      gap: 8,
-    },
-    bookPill: {
-      maxWidth: 220,
-      paddingHorizontal: 16,
-      paddingVertical: 10,
-      borderRadius: 999,
-      backgroundColor: colors.surface,
-    },
-    bookPillSelected: {
-      backgroundColor: colors.accent,
-    },
-    bookPillText: {
-      color: colors.ink,
-      fontSize: 14,
-      fontWeight: '600',
-    },
-    bookPillTextSelected: {
-      color: colors.white,
-    },
     error: {
       color: colors.danger,
       fontSize: 12,
-    },
-    context: {
-      color: colors.muted,
-      fontSize: 13,
     },
     summary: {
       padding: 16,
