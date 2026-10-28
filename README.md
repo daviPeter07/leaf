@@ -18,20 +18,20 @@ Páginas, tempo e ritmo de cada dia de leitura — e um status pronto para compa
 
 ---
 
-## ✨ O que o Leaf faz
+## O que o Leaf faz
 
 | | |
 |---|---|
-| 📚 **Biblioteca** | Cadastre livros com total de páginas e capítulos, acompanhe o progresso e separe o que está lendo do que já terminou. |
-| ✍️ **Registro de leitura** | Informe de qual página até qual página leu e quanto tempo levou. O progresso e o capítulo atual são atualizados sozinhos. |
-| 📈 **Sua semana** | Páginas, tempo e dias lidos de segunda a domingo, com gráfico semanal e sequência de dias seguidos 🔥. |
-| 🏃 **Feed de atividades** | Cada sessão vira um card no estilo Strava: **Páginas · Ritmo · Tempo**, com o ritmo em minutos por página. |
-| 📤 **Status para os stories** | Escolha um dia de leitura e gere uma imagem 9:16 com as métricas empilhadas e um ícone de livro — com foto de fundo ou como sticker transparente. |
-| 👋 **Tutorial de boas-vindas** | Cinco cards explicam o app no primeiro acesso e não aparecem de novo. |
+| **Biblioteca** | Cadastre livros com total de páginas e capítulos, acompanhe o progresso e separe o que está lendo do que já terminou. |
+| **Registro de leitura** | Informe de qual página até qual página leu e quanto tempo levou. O progresso e o capítulo atual são atualizados sozinhos. |
+| **Sua semana** | Páginas, tempo e dias lidos de segunda a domingo, com gráfico semanal e sequência de dias seguidos. |
+| **Feed de atividades** | Cada sessão vira um card no estilo Strava: **Páginas · Ritmo · Tempo**, com o ritmo em minutos por página. |
+| **Status para os stories** | Escolha um dia de leitura e gere uma imagem 9:16 com as métricas empilhadas e um ícone de livro — com foto de fundo ou como sticker transparente. |
+| **Tutorial de boas-vindas** | Cinco cards explicam o app no primeiro acesso e não aparecem de novo. |
 
 Tudo fica salvo **apenas no aparelho** — sem conta, sem servidor.
 
-## 🧱 Stack
+## Stack
 
 - **[Expo SDK 58](https://docs.expo.dev/versions/v58.0.0/)** + **Expo Router** (rotas por arquivos, `Stack.Protected` para o onboarding)
 - **React Native 0.88** com **React Compiler** ativado
@@ -41,7 +41,7 @@ Tudo fica salvo **apenas no aparelho** — sem conta, sem servidor.
 - **react-native-view-shot** + **expo-sharing** + **expo-image-picker** para gerar e compartilhar o status
 - **lucide-react-native** para ícones
 
-## 🚀 Rodando localmente
+## Rodando localmente
 
 Pré-requisitos: Node.js LTS e o app **Expo Go** no celular (ou um emulador Android / simulador iOS).
 
@@ -66,7 +66,7 @@ Escaneie o QR code com o Expo Go, ou pressione `a` (Android) / `i` (iOS) no term
 | `npx tsc --noEmit` | Checagem de tipos (modo strict) |
 | `npx expo install --check` | Confere se as dependências batem com o SDK |
 
-## 🗂️ Estrutura
+## Estrutura
 
 ```
 src/
@@ -89,7 +89,7 @@ src/
 └── types/                  # Modelos Book e ReadingSession
 ```
 
-## 🧠 Como funciona por dentro
+## Como funciona por dentro
 
 - **Regras de negócio no store.** Limites de páginas e capítulos, cálculo do capítulo atual e a marcação de livro finalizado vivem nas actions do Zustand — as telas só chamam `addReading`, `updateBook` etc.
 - **Datas locais.** Os dias de leitura são agrupados pela data do aparelho, então uma leitura às 23h conta para o dia certo.
