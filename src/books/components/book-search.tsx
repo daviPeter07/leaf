@@ -63,7 +63,7 @@ export function BookSearch({ onSelect }: BookSearchProps) {
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="Buscar por título ou autor"
+          placeholder="Título, autor ou os dois juntos"
           placeholderTextColor={colors.muted}
           returnKeyType="search"
           autoCorrect={false}
@@ -76,6 +76,8 @@ export function BookSearch({ onSelect }: BookSearchProps) {
           </TouchableOpacity>
         ) : null}
       </View>
+
+      {!query ? <Text style={styles.message}>Ex.: &quot;dom casmurro machado&quot; ou &quot;1984 orwell&quot;</Text> : null}
 
       {current?.status === 'error' ? (
         <Text style={styles.message}>Não foi possível buscar agora. Confira a internet ou preencha manualmente.</Text>

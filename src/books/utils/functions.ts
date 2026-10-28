@@ -26,8 +26,20 @@ export function getBookTotals(bookId: string, sessions: ReadingSession[]) {
   };
 }
 
+// Lets the reader type title and author together however they like ("Dom Casmurro - Machado", "1984 by Orwell").
+// Open Library reads the query as Lucene syntax, where a leading "-" excludes a word, so "Título - Autor" would
+// find nothing. Punctuation becomes spaces and "por"/"by" between title and author are dropped.
+export function normalizeSearchQuery(query: string) {
+  return query
+    .replace(/[()[\]{}"~*?:\\/|,;—–^!+]/g, ' ')
+    .replace(/(^|\s)-+/g, ' ')
+    .replace(/\s(?:por|by)\s/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export async function searchBooks(query: string, signal?: AbortSignal): Promise<BookSearchResult[]> {
-  const params = new URLSearchParams({ q: query, fields: OPEN_LIBRARY_FIELDS, limit: String(BOOK_SEARCH_LIMIT) });
+  const params = new URLSearchParams({ q: normalizeSearchQuery(query), fields: OPEN_LIBRARY_FIELDS, limit: String(BOOK_SEARCH_LIMIT) });
   const response = await fetch(`${OPEN_LIBRARY_SEARCH_URL}?${params}`, {
     signal,
     headers: { 'User-Agent': 'Leaf/1.0 (https://github.com/daviPeter07/leaf)' },
