@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { House, Library, Share2 } from 'lucide-react-native';
+import { House, Library, Settings, Share2 } from 'lucide-react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -43,6 +43,13 @@ export default function TabLayout() {
         options={{
           title: 'Status',
           tabBarIcon: ({ color }) => <Share2 size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Ajustes',
+          tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>
