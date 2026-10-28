@@ -2,16 +2,18 @@ import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import { BookOpen } from 'lucide-react-native';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BookPicker } from '@/books/components/book-picker';
 import { ActionButton } from '@/components/app/action-button';
 import { EmptyState } from '@/components/app/empty-state';
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
 import { FormField } from '@/components/app/form-field';
 import { NumberField } from '@/components/app/number-field';
 import { StatRow } from '@/components/app/stat-row';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 import { formatDuration, formatPace } from '@/reading/utils/functions';
 import { readingSchema, type ReadingFormData } from '@/reading/utils/zod';
 import { useReadingStore } from '@/store/reading-store';
@@ -19,6 +21,9 @@ import { useReadingStore } from '@/store/reading-store';
 type FormErrors = Partial<Record<keyof ReadingFormData, string>>;
 
 export default function LogReadingScreen() {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const { bookId: routeBookId } = useLocalSearchParams<{ bookId?: string }>();
   // Select the stable array and filter outside: a selector returning a new array loops forever in Zustand 5.
   const allBooks = useReadingStore((state) => state.books);
@@ -86,7 +91,7 @@ export default function LogReadingScreen() {
           <EmptyState
             actionLabel="Adicionar livro"
             description="Para registrar uma leitura, primeiro adicione um livro em andamento."
-            icon={<BookOpen size={28} color={ReadingColors.accent} />}
+            icon={<BookOpen size={28} color={colors.accent} />}
             onAction={() => router.replace('/add-book')}
             title="Nenhum livro em leitura"
           />
@@ -100,29 +105,8 @@ export default function LogReadingScreen() {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View style={styles.fieldGroup}>
           <Text style={styles.label}>Livro</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.bookList}>
-            {books.map((book) => {
-              const isSelected = book.id === bookId;
-
-              return (
-                <TouchableOpacity
-                  key={book.id}
-                  style={[styles.bookPill, isSelected ? styles.bookPillSelected : undefined]}
-                  onPress={() => selectBook(book.id)}>
-                  <Text style={[styles.bookPillText, isSelected ? styles.bookPillTextSelected : undefined]} numberOfLines={1}>
-                    {book.title}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
+          <BookPicker books={books} selectedId={bookId} onSelect={selectBook} />
           {errors.bookId ? <Text style={styles.error}>{errors.bookId}</Text> : null}
-          {selectedBook ? (
-            <Text style={styles.context}>
-              Você parou na página {selectedBook.currentPage} de {selectedBook.totalPages} · capítulo{' '}
-              {selectedBook.currentChapter} de {selectedBook.chapters}
-            </Text>
-          ) : null}
         </View>
 
         <NumberField
@@ -197,67 +181,43 @@ export default function LogReadingScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    gap: 22,
-    padding: 20,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  fieldGroup: {
-    gap: 6,
-  },
-  label: {
-    color: ReadingColors.text,
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  bookList: {
-    gap: 8,
-  },
-  bookPill: {
-    maxWidth: 220,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 999,
-    backgroundColor: ReadingColors.surface,
-  },
-  bookPillSelected: {
-    backgroundColor: ReadingColors.accent,
-  },
-  bookPillText: {
-    color: ReadingColors.ink,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  bookPillTextSelected: {
-    color: ReadingColors.white,
-  },
-  error: {
-    color: ReadingColors.danger,
-    fontSize: 12,
-  },
-  context: {
-    color: ReadingColors.muted,
-    fontSize: 13,
-  },
-  summary: {
-    padding: 16,
-    borderRadius: 14,
-    backgroundColor: ReadingColors.accentSoft,
-  },
-  noteInput: {
-    minHeight: 96,
-    paddingTop: 14,
-  },
-  submit: {
-    marginTop: 12,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      gap: 22,
+      padding: 20,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      padding: 20,
+    },
+    fieldGroup: {
+      gap: 6,
+    },
+    label: {
+      color: colors.text,
+      fontSize: 13,
+      fontWeight: '600',
+    },
+    error: {
+      color: colors.danger,
+      fontSize: 12,
+    },
+    summary: {
+      padding: 16,
+      borderRadius: 14,
+      backgroundColor: colors.accentSoft,
+    },
+    noteInput: {
+      minHeight: 96,
+      paddingTop: 14,
+    },
+    submit: {
+      marginTop: 12,
+    },
+  });

@@ -1,17 +1,22 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { CircleCheck, Pencil, Trash2 } from 'lucide-react-native';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionButton } from '@/components/app/action-button';
 import { StatRow } from '@/components/app/stat-row';
 import { ActivityCard } from '@/reading/components/activity-card';
 import { BookCover } from '@/books/components/book-cover';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 import { useReadingStore } from '@/store/reading-store';
 import { getBookProgress, getBookTotals } from '@/books/utils/functions';
 import { formatDuration } from '@/reading/utils/functions';
 
 export default function BookDetailScreen() {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const { id } = useLocalSearchParams<{ id: string }>();
   const readerName = useReadingStore((state) => state.readerName);
   const books = useReadingStore((state) => state.books);
@@ -61,155 +66,202 @@ export default function BookDetailScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => router.push({ pathname: '/edit-book', params: { id: selectedBook.id } })}
+              hitSlop={10}
+              accessibilityLabel="Editar livro">
+              <Pencil size={20} color={colors.ink} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <View style={styles.hero}>
-          <BookCover book={selectedBook} size="large" />
-          <View style={styles.heroCopy}>
-            <Text style={styles.title}>{selectedBook.title}</Text>
-            <Text style={styles.author}>{selectedBook.author}</Text>
-            <Text style={styles.status}>
-              {selectedBook.finishedAt ? 'Finalizado' : `Capítulo ${selectedBook.currentChapter} de ${selectedBook.chapters}`}
+        <View style={styles.card}>
+          <View style={styles.hero}>
+            <BookCover book={selectedBook} size="large" />
+            <View style={styles.heroCopy}>
+              <Text style={styles.title}>{selectedBook.title}</Text>
+              <Text style={styles.author}>{selectedBook.author}</Text>
+              <Text style={styles.status}>
+                {selectedBook.finishedAt ? 'Finalizado' : `Capítulo ${selectedBook.currentChapter} de ${selectedBook.chapters}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.progressBlock}>
+            <View style={styles.progressTrack}>
+              <View style={[styles.progressFill, { width: `${progress}%` }]} />
+            </View>
+            <Text style={styles.progressText}>
+              {selectedBook.currentPage} de {selectedBook.totalPages} páginas · {progress}%
             </Text>
           </View>
-        </View>
 
-        <View style={styles.progressBlock}>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: `${progress}%` }]} />
-          </View>
-          <Text style={styles.progressText}>
-            {selectedBook.currentPage} de {selectedBook.totalPages} páginas · {progress}%
-          </Text>
-        </View>
-
-        <StatRow
-          stats={[
-            { label: 'Páginas lidas', value: totals.pages },
-            { label: 'Tempo', value: formatDuration(totals.minutes) },
-            { label: 'Sessões', value: totals.sessions.length },
-          ]}
-        />
-
-        <View style={styles.actions}>
           {!selectedBook.finishedAt ? (
             <ActionButton
               label="Registrar leitura"
               onPress={() => router.push({ pathname: '/log-reading', params: { bookId: selectedBook.id } })}
             />
           ) : null}
-          <View style={styles.actionRow}>
-            <ActionButton
-              label="Editar"
-              tone="secondary"
-              style={styles.actionButton}
-              onPress={() => router.push({ pathname: '/edit-book', params: { id: selectedBook.id } })}
-            />
-            {!selectedBook.finishedAt ? (
-              <ActionButton label="Finalizar" tone="secondary" style={styles.actionButton} onPress={confirmFinish} />
-            ) : null}
-          </View>
         </View>
 
-        <View>
-          <Text style={styles.sectionTitle}>Histórico</Text>
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Resumo</Text>
+          <StatRow
+            stats={[
+              { label: 'Páginas lidas', value: totals.pages },
+              { label: 'Tempo', value: formatDuration(totals.minutes) },
+              { label: 'Sessões', value: totals.sessions.length },
+            ]}
+          />
+        </View>
+
+        <View style={[styles.card, styles.listCard]}>
+          <Text style={styles.cardTitle}>Histórico</Text>
           {totals.sessions.length > 0 ? (
-            totals.sessions.map((session) => (
-              <ActivityCard key={session.id} book={selectedBook} readerName={readerName} session={session} />
+            totals.sessions.map((session, index) => (
+              <ActivityCard
+                key={session.id}
+                book={selectedBook}
+                readerName={readerName}
+                session={session}
+                divider={index < totals.sessions.length - 1}
+              />
             ))
           ) : (
             <Text style={styles.emptyText}>Nenhuma leitura registrada neste livro ainda.</Text>
           )}
         </View>
 
-        <ActionButton label="Remover livro" tone="danger" onPress={confirmRemove} />
+        <View style={[styles.card, styles.menuCard]}>
+          {!selectedBook.finishedAt ? (
+            <TouchableOpacity style={styles.menuItem} onPress={confirmFinish}>
+              <CircleCheck size={20} color={colors.ink} />
+              <Text style={styles.menuText}>Marcar como finalizado</Text>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity style={[styles.menuItem, !selectedBook.finishedAt ? styles.menuItemDivider : undefined]} onPress={confirmRemove}>
+            <Trash2 size={20} color={colors.danger} />
+            <Text style={[styles.menuText, styles.menuTextDanger]}>Remover livro</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    gap: 24,
-    padding: 20,
-    paddingBottom: 32,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 20,
-    padding: 20,
-  },
-  emptyTitle: {
-    color: ReadingColors.ink,
-    fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-  hero: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 18,
-  },
-  heroCopy: {
-    flex: 1,
-    gap: 4,
-  },
-  title: {
-    color: ReadingColors.ink,
-    fontSize: 24,
-    fontWeight: '800',
-    letterSpacing: -0.4,
-  },
-  author: {
-    color: ReadingColors.text,
-    fontSize: 15,
-  },
-  status: {
-    marginTop: 4,
-    color: ReadingColors.accent,
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  progressBlock: {
-    gap: 8,
-  },
-  progressTrack: {
-    height: 6,
-    overflow: 'hidden',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.surface,
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.accent,
-  },
-  progressText: {
-    color: ReadingColors.muted,
-    fontSize: 13,
-  },
-  actions: {
-    gap: 10,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionButton: {
-    flex: 1,
-  },
-  sectionTitle: {
-    color: ReadingColors.ink,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  emptyText: {
-    paddingVertical: 16,
-    color: ReadingColors.muted,
-    fontSize: 15,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.surface,
+    },
+    container: {
+      gap: 14,
+      padding: 16,
+      paddingBottom: 32,
+    },
+    card: {
+      gap: 16,
+      padding: 18,
+      borderRadius: 16,
+      backgroundColor: colors.background,
+    },
+    listCard: {
+      gap: 0,
+      paddingBottom: 4,
+    },
+    menuCard: {
+      gap: 0,
+      padding: 0,
+      overflow: 'hidden',
+    },
+    cardTitle: {
+      color: colors.ink,
+      fontSize: 17,
+      fontWeight: '700',
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      gap: 20,
+      padding: 20,
+    },
+    emptyTitle: {
+      color: colors.ink,
+      fontSize: 24,
+      fontWeight: '800',
+      textAlign: 'center',
+    },
+    hero: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 18,
+    },
+    heroCopy: {
+      flex: 1,
+      gap: 4,
+    },
+    title: {
+      color: colors.ink,
+      fontSize: 24,
+      fontWeight: '800',
+      letterSpacing: -0.4,
+    },
+    author: {
+      color: colors.text,
+      fontSize: 15,
+    },
+    status: {
+      marginTop: 4,
+      color: colors.accent,
+      fontSize: 13,
+      fontWeight: '700',
+    },
+    progressBlock: {
+      gap: 8,
+    },
+    progressTrack: {
+      height: 6,
+      overflow: 'hidden',
+      borderRadius: 999,
+      backgroundColor: colors.surface,
+    },
+    progressFill: {
+      height: '100%',
+      borderRadius: 999,
+      backgroundColor: colors.accent,
+    },
+    progressText: {
+      color: colors.muted,
+      fontSize: 13,
+    },
+    menuItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+      paddingHorizontal: 18,
+      paddingVertical: 16,
+    },
+    menuItemDivider: {
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: colors.line,
+    },
+    menuText: {
+      color: colors.ink,
+      fontSize: 15,
+      fontWeight: '500',
+    },
+    menuTextDanger: {
+      color: colors.danger,
+    },
+    emptyText: {
+      paddingTop: 12,
+      paddingBottom: 14,
+      color: colors.muted,
+      fontSize: 15,
+    },
+  });

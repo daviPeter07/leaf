@@ -4,11 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
 import { BookForm } from '@/books/components/book-form';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 import { useReadingStore } from '@/store/reading-store';
 import type { AddBookInput } from '@/books/types';
 
 export default function AddBookScreen() {
+  const styles = useThemedStyles(createStyles);
+
   const addBook = useReadingStore((state) => state.addBook);
 
   function submit(data: AddBookInput) {
@@ -25,12 +28,13 @@ export default function AddBookScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    padding: 20,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      padding: 20,
+    },
+  });

@@ -3,7 +3,8 @@ import { Minus, Plus } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 
 type NumberFieldProps = {
   label: string;
@@ -42,6 +43,9 @@ export function NumberField({
   baseValue,
   containerStyle,
 }: NumberFieldProps) {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const parsed = Number.parseInt(value, 10);
   const current = Number.isNaN(parsed) ? (baseValue ?? min) : parsed;
 
@@ -66,7 +70,7 @@ export function NumberField({
           accessibilityLabel={`Diminuir ${label}`}
           disabled={current <= min}
           onPress={() => change(current - step)}>
-          <Minus size={18} color={ReadingColors.ink} strokeWidth={2.5} />
+          <Minus size={18} color={colors.ink} strokeWidth={2.5} />
         </StepButton>
         <View style={styles.valueBox}>
           <TextInput
@@ -74,7 +78,7 @@ export function NumberField({
             onChangeText={(text) => onChangeText(text.replace(/\D/g, ''))}
             keyboardType="number-pad"
             placeholder={placeholder}
-            placeholderTextColor={ReadingColors.muted}
+            placeholderTextColor={colors.muted}
             selectTextOnFocus
             style={styles.input}
           />
@@ -84,7 +88,7 @@ export function NumberField({
           accessibilityLabel={`Aumentar ${label}`}
           disabled={max !== undefined && current >= max}
           onPress={() => change(current + step)}>
-          <Plus size={18} color={ReadingColors.ink} strokeWidth={2.5} />
+          <Plus size={18} color={colors.ink} strokeWidth={2.5} />
         </StepButton>
       </View>
 
@@ -119,6 +123,8 @@ function StepButton({
   disabled: boolean;
   onPress: () => void;
 }) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <TouchableOpacity
       accessibilityLabel={accessibilityLabel}
@@ -131,96 +137,97 @@ function StepButton({
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    gap: 8,
-  },
-  labelRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    gap: 8,
-  },
-  label: {
-    color: ReadingColors.text,
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  hint: {
-    flexShrink: 1,
-    color: ReadingColors.muted,
-    fontSize: 12,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    padding: 6,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: ReadingColors.surface,
-    backgroundColor: ReadingColors.surface,
-  },
-  inputRowError: {
-    borderColor: ReadingColors.danger,
-  },
-  stepButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: ReadingColors.background,
-  },
-  stepButtonDisabled: {
-    opacity: 0.4,
-  },
-  valueBox: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'center',
-    gap: 4,
-  },
-  input: {
-    minWidth: 48,
-    paddingVertical: 6,
-    color: ReadingColors.ink,
-    fontSize: 22,
-    fontWeight: '700',
-    fontVariant: ['tabular-nums'],
-    textAlign: 'center',
-  },
-  unit: {
-    color: ReadingColors.muted,
-    fontSize: 14,
-  },
-  chips: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: ReadingColors.line,
-  },
-  chipAccent: {
-    borderColor: ReadingColors.accentSoft,
-    backgroundColor: ReadingColors.accentSoft,
-  },
-  chipText: {
-    color: ReadingColors.ink,
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  chipTextAccent: {
-    color: ReadingColors.accent,
-  },
-  error: {
-    color: ReadingColors.danger,
-    fontSize: 12,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    wrapper: {
+      gap: 8,
+    },
+    labelRow: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      gap: 8,
+    },
+    label: {
+      color: colors.text,
+      fontSize: 13,
+      fontWeight: '600',
+    },
+    hint: {
+      flexShrink: 1,
+      color: colors.muted,
+      fontSize: 12,
+    },
+    inputRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      padding: 6,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: colors.surface,
+      backgroundColor: colors.surface,
+    },
+    inputRowError: {
+      borderColor: colors.danger,
+    },
+    stepButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 42,
+      height: 42,
+      borderRadius: 10,
+      backgroundColor: colors.background,
+    },
+    stepButtonDisabled: {
+      opacity: 0.4,
+    },
+    valueBox: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      justifyContent: 'center',
+      gap: 4,
+    },
+    input: {
+      minWidth: 48,
+      paddingVertical: 6,
+      color: colors.ink,
+      fontSize: 22,
+      fontWeight: '700',
+      fontVariant: ['tabular-nums'],
+      textAlign: 'center',
+    },
+    unit: {
+      color: colors.muted,
+      fontSize: 14,
+    },
+    chips: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    chip: {
+      paddingHorizontal: 14,
+      paddingVertical: 8,
+      borderRadius: 999,
+      borderWidth: 1,
+      borderColor: colors.line,
+    },
+    chipAccent: {
+      borderColor: colors.accentSoft,
+      backgroundColor: colors.accentSoft,
+    },
+    chipText: {
+      color: colors.ink,
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    chipTextAccent: {
+      color: colors.accent,
+    },
+    error: {
+      color: colors.danger,
+      fontSize: 12,
+    },
+  });

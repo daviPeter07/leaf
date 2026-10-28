@@ -5,11 +5,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionButton } from '@/components/app/action-button';
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
 import { BookForm } from '@/books/components/book-form';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 import { useReadingStore } from '@/store/reading-store';
 import type { AddBookInput } from '@/books/types';
 
 export default function EditBookScreen() {
+  const styles = useThemedStyles(createStyles);
+
   const { id } = useLocalSearchParams<{ id: string }>();
   const book = useReadingStore((state) => state.books.find((item) => item.id === id));
   const updateBook = useReadingStore((state) => state.updateBook);
@@ -39,24 +42,25 @@ export default function EditBookScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    padding: 20,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 20,
-    padding: 20,
-  },
-  emptyTitle: {
-    color: ReadingColors.ink,
-    fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      padding: 20,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      gap: 20,
+      padding: 20,
+    },
+    emptyTitle: {
+      color: colors.ink,
+      fontSize: 24,
+      fontWeight: '800',
+      textAlign: 'center',
+    },
+  });

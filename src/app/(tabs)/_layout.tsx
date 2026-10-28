@@ -1,19 +1,21 @@
 import { Tabs } from 'expo-router';
-import { House, Library, Share2 } from 'lucide-react-native';
+import { House, Library, Settings, Share2 } from 'lucide-react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { ReadingColors } from '@/constants/theme';
+import { useColors } from '@/hooks/use-theme';
 
 export default function TabLayout() {
+  const colors = useColors();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: ReadingColors.accent,
-        tabBarInactiveTintColor: ReadingColors.muted,
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.muted,
         tabBarStyle: {
-          backgroundColor: ReadingColors.background,
-          borderTopColor: ReadingColors.line,
+          backgroundColor: colors.background,
+          borderTopColor: colors.line,
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -41,6 +43,13 @@ export default function TabLayout() {
         options={{
           title: 'Status',
           tabBarIcon: ({ color }) => <Share2 size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Ajustes',
+          tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>

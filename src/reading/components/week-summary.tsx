@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { StatRow } from '@/components/app/stat-row';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 import { formatDuration, getWeekSummary } from '@/reading/utils/functions';
 
 type WeekSummaryProps = {
@@ -9,6 +10,9 @@ type WeekSummaryProps = {
 };
 
 export function WeekSummary({ summary }: WeekSummaryProps) {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const maxPages = Math.max(1, ...summary.days.map((day) => day.pages));
 
   return (
@@ -30,7 +34,7 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
                 style={[
                   styles.bar,
                   day.pages > 0
-                    ? { height: `${Math.max(12, (day.pages / maxPages) * 100)}%`, backgroundColor: ReadingColors.accent }
+                    ? { height: `${Math.max(12, (day.pages / maxPages) * 100)}%`, backgroundColor: colors.accent }
                     : styles.barEmpty,
                 ]}
               />
@@ -43,47 +47,48 @@ export function WeekSummary({ summary }: WeekSummaryProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    gap: 16,
-    padding: 18,
-    borderRadius: 16,
-    backgroundColor: ReadingColors.surface,
-  },
-  title: {
-    color: ReadingColors.ink,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  chart: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  column: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 6,
-  },
-  barArea: {
-    width: '100%',
-    height: 56,
-    justifyContent: 'flex-end',
-  },
-  bar: {
-    width: '100%',
-    borderRadius: 4,
-  },
-  barEmpty: {
-    height: 4,
-    backgroundColor: ReadingColors.line,
-  },
-  dayLabel: {
-    color: ReadingColors.muted,
-    fontSize: 11,
-    fontWeight: '600',
-  },
-  dayLabelToday: {
-    color: ReadingColors.accent,
-    fontWeight: '800',
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      gap: 16,
+      padding: 18,
+      borderRadius: 16,
+      backgroundColor: colors.background,
+    },
+    title: {
+      color: colors.ink,
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    chart: {
+      flexDirection: 'row',
+      gap: 10,
+    },
+    column: {
+      flex: 1,
+      alignItems: 'center',
+      gap: 6,
+    },
+    barArea: {
+      width: '100%',
+      height: 56,
+      justifyContent: 'flex-end',
+    },
+    bar: {
+      width: '100%',
+      borderRadius: 4,
+    },
+    barEmpty: {
+      height: 4,
+      backgroundColor: colors.line,
+    },
+    dayLabel: {
+      color: colors.muted,
+      fontSize: 11,
+      fontWeight: '600',
+    },
+    dayLabelToday: {
+      color: colors.accent,
+      fontWeight: '800',
+    },
+  });
