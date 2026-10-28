@@ -1,11 +1,12 @@
-import { DefaultTheme, ThemeProvider } from 'expo-router/react-navigation';
+import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router/react-navigation';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { ReadingColors } from '@/constants/theme';
+import { DarkColors, LightColors, type Palette } from '@/constants/theme';
+import { useIsDark } from '@/hooks/use-theme';
 import { useReadingStore, useReadingStoreHydrated } from '@/store/reading-store';
 
 export const unstable_settings = {
@@ -14,21 +15,28 @@ export const unstable_settings = {
 
 SplashScreen.preventAutoHideAsync();
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: ReadingColors.accent,
-    background: ReadingColors.background,
-    card: ReadingColors.background,
-    text: ReadingColors.ink,
-    border: ReadingColors.line,
-  },
-};
+function navigationTheme(base: typeof DefaultTheme, colors: Palette) {
+  return {
+    ...base,
+    colors: {
+      ...base.colors,
+      primary: colors.accent,
+      background: colors.background,
+      card: colors.background,
+      text: colors.ink,
+      border: colors.line,
+    },
+  };
+}
+
+const lightTheme = navigationTheme(DefaultTheme, LightColors);
+const darkTheme = navigationTheme(DarkTheme, DarkColors);
 
 export default function RootLayout() {
   const hydrated = useReadingStoreHydrated();
   const hasSeenTutorial = useReadingStore((state) => state.hasSeenTutorial);
+  const isDark = useIsDark();
+  const colors = isDark ? DarkColors : LightColors;
 
   useEffect(() => {
     if (hydrated) {
@@ -42,11 +50,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={theme}>
+    <ThemeProvider value={isDark ? darkTheme : lightTheme}>
       <Stack
         screenOptions={{
           headerShadowVisible: false,
-          headerTintColor: ReadingColors.ink,
+          headerTintColor: colors.ink,
           headerTitleStyle: { fontWeight: '700' },
           headerBackButtonDisplayMode: 'minimal',
         }}>
@@ -62,7 +70,7 @@ export default function RootLayout() {
           <Stack.Screen name="tutorial" options={{ headerShown: false, animation: 'fade' }} />
         </Stack.Protected>
       </Stack>
-      <StatusBar style="dark" />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
     </ThemeProvider>
   );
 }

@@ -3,17 +3,19 @@ import { House, Library, Share2 } from 'lucide-react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { ReadingColors } from '@/constants/theme';
+import { useColors } from '@/hooks/use-theme';
 
 export default function TabLayout() {
+  const colors = useColors();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: ReadingColors.accent,
-        tabBarInactiveTintColor: ReadingColors.muted,
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.muted,
         tabBarStyle: {
-          backgroundColor: ReadingColors.background,
-          borderTopColor: ReadingColors.line,
+          backgroundColor: colors.background,
+          borderTopColor: colors.line,
         },
         tabBarLabelStyle: {
           fontSize: 11,

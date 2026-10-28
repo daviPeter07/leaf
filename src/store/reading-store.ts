@@ -6,11 +6,13 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { AddBookInput, Book, UpdateBookInput } from '@/books/types';
 import { COVER_PAIRS } from '@/books/utils/constants';
 import { createId } from '@/books/utils/functions';
+import type { ThemePreference } from '@/constants/theme';
 import type { AddReadingInput, ReadingSession } from '@/reading/types';
 
 type ReadingState = {
   readerName: string;
   hasSeenTutorial: boolean;
+  themePreference: ThemePreference;
   books: Book[];
   sessions: ReadingSession[];
   addBook: (input: AddBookInput) => void;
@@ -19,6 +21,7 @@ type ReadingState = {
   removeBook: (bookId: string) => void;
   finishBook: (bookId: string) => void;
   completeTutorial: () => void;
+  setThemePreference: (preference: ThemePreference) => void;
 };
 
 export const useReadingStore = create<ReadingState>()(
@@ -26,6 +29,7 @@ export const useReadingStore = create<ReadingState>()(
     (set, get) => ({
       readerName: 'Alice',
       hasSeenTutorial: false,
+      themePreference: 'system',
       books: [],
       sessions: [],
       addBook: ({ title, author, totalPages, chapters, currentPage = 0 }) => {
@@ -147,6 +151,9 @@ export const useReadingStore = create<ReadingState>()(
       },
       completeTutorial: () => {
         set({ hasSeenTutorial: true });
+      },
+      setThemePreference: (themePreference) => {
+        set({ themePreference });
       },
     }),
     {

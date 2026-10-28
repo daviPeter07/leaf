@@ -6,12 +6,15 @@ import { ActionButton } from '@/components/app/action-button';
 import { StatRow } from '@/components/app/stat-row';
 import { ActivityCard } from '@/reading/components/activity-card';
 import { BookCover } from '@/books/components/book-cover';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 import { useReadingStore } from '@/store/reading-store';
 import { getBookProgress, getBookTotals } from '@/books/utils/functions';
 import { formatDuration } from '@/reading/utils/functions';
 
 export default function BookDetailScreen() {
+  const styles = useThemedStyles(createStyles);
+
   const { id } = useLocalSearchParams<{ id: string }>();
   const readerName = useReadingStore((state) => state.readerName);
   const books = useReadingStore((state) => state.books);
@@ -127,89 +130,90 @@ export default function BookDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    gap: 24,
-    padding: 20,
-    paddingBottom: 32,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 20,
-    padding: 20,
-  },
-  emptyTitle: {
-    color: ReadingColors.ink,
-    fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'center',
-  },
-  hero: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 18,
-  },
-  heroCopy: {
-    flex: 1,
-    gap: 4,
-  },
-  title: {
-    color: ReadingColors.ink,
-    fontSize: 24,
-    fontWeight: '800',
-    letterSpacing: -0.4,
-  },
-  author: {
-    color: ReadingColors.text,
-    fontSize: 15,
-  },
-  status: {
-    marginTop: 4,
-    color: ReadingColors.accent,
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  progressBlock: {
-    gap: 8,
-  },
-  progressTrack: {
-    height: 6,
-    overflow: 'hidden',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.surface,
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.accent,
-  },
-  progressText: {
-    color: ReadingColors.muted,
-    fontSize: 13,
-  },
-  actions: {
-    gap: 10,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionButton: {
-    flex: 1,
-  },
-  sectionTitle: {
-    color: ReadingColors.ink,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  emptyText: {
-    paddingVertical: 16,
-    color: ReadingColors.muted,
-    fontSize: 15,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      gap: 24,
+      padding: 20,
+      paddingBottom: 32,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      gap: 20,
+      padding: 20,
+    },
+    emptyTitle: {
+      color: colors.ink,
+      fontSize: 24,
+      fontWeight: '800',
+      textAlign: 'center',
+    },
+    hero: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 18,
+    },
+    heroCopy: {
+      flex: 1,
+      gap: 4,
+    },
+    title: {
+      color: colors.ink,
+      fontSize: 24,
+      fontWeight: '800',
+      letterSpacing: -0.4,
+    },
+    author: {
+      color: colors.text,
+      fontSize: 15,
+    },
+    status: {
+      marginTop: 4,
+      color: colors.accent,
+      fontSize: 13,
+      fontWeight: '700',
+    },
+    progressBlock: {
+      gap: 8,
+    },
+    progressTrack: {
+      height: 6,
+      overflow: 'hidden',
+      borderRadius: 999,
+      backgroundColor: colors.surface,
+    },
+    progressFill: {
+      height: '100%',
+      borderRadius: 999,
+      backgroundColor: colors.accent,
+    },
+    progressText: {
+      color: colors.muted,
+      fontSize: 13,
+    },
+    actions: {
+      gap: 10,
+    },
+    actionRow: {
+      flexDirection: 'row',
+      gap: 10,
+    },
+    actionButton: {
+      flex: 1,
+    },
+    sectionTitle: {
+      color: colors.ink,
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    emptyText: {
+      paddingVertical: 16,
+      color: colors.muted,
+      fontSize: 15,
+    },
+  });

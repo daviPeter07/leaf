@@ -12,12 +12,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionButton } from '@/components/app/action-button';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 import { TutorialSlide } from '@/tutorial/components/tutorial-slide';
 import { TUTORIAL_SLIDES } from '@/tutorial/utils/constants';
 import { useReadingStore } from '@/store/reading-store';
 
 export default function TutorialScreen() {
+  const styles = useThemedStyles(createStyles);
+
   const { width } = useWindowDimensions();
   const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
   const [index, setIndex] = useState(0);
@@ -72,42 +75,43 @@ export default function TutorialScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  topBar: {
-    alignItems: 'flex-end',
-    height: 44,
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
-  skip: {
-    color: ReadingColors.muted,
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  pager: {
-    flex: 1,
-  },
-  footer: {
-    gap: 24,
-    padding: 24,
-  },
-  dots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 999,
-    backgroundColor: ReadingColors.line,
-  },
-  dotActive: {
-    width: 22,
-    backgroundColor: ReadingColors.accent,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    topBar: {
+      alignItems: 'flex-end',
+      height: 44,
+      justifyContent: 'center',
+      paddingHorizontal: 24,
+    },
+    skip: {
+      color: colors.muted,
+      fontSize: 15,
+      fontWeight: '600',
+    },
+    pager: {
+      flex: 1,
+    },
+    footer: {
+      gap: 24,
+      padding: 24,
+    },
+    dots: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 8,
+    },
+    dot: {
+      width: 7,
+      height: 7,
+      borderRadius: 999,
+      backgroundColor: colors.line,
+    },
+    dotActive: {
+      width: 22,
+      backgroundColor: colors.accent,
+    },
+  });

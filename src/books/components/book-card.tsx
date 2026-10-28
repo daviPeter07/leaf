@@ -2,7 +2,8 @@ import { ChevronRight } from 'lucide-react-native';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { BookCover } from '@/books/components/book-cover';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 import type { Book } from '@/books/types';
 import { getBookProgress } from '@/books/utils/functions';
 
@@ -12,6 +13,9 @@ type BookCardProps = {
 };
 
 export function BookCard({ book, onPress }: BookCardProps) {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const progress = getBookProgress(book);
 
   const content = (
@@ -33,7 +37,7 @@ export function BookCard({ book, onPress }: BookCardProps) {
           </>
         )}
       </View>
-      {onPress ? <ChevronRight size={20} color={ReadingColors.muted} /> : null}
+      {onPress ? <ChevronRight size={20} color={colors.muted} /> : null}
     </>
   );
 
@@ -48,52 +52,53 @@ export function BookCard({ book, onPress }: BookCardProps) {
   return <View style={styles.card}>{content}</View>;
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    paddingVertical: 12,
-  },
-  content: {
-    flex: 1,
-    gap: 4,
-  },
-  title: {
-    color: ReadingColors.ink,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  author: {
-    color: ReadingColors.muted,
-    fontSize: 14,
-  },
-  progressTrack: {
-    height: 4,
-    marginTop: 6,
-    overflow: 'hidden',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.surface,
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 999,
-    backgroundColor: ReadingColors.accent,
-  },
-  meta: {
-    color: ReadingColors.muted,
-    fontSize: 12,
-  },
-  finished: {
-    alignSelf: 'flex-start',
-    marginTop: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 999,
-    overflow: 'hidden',
-    backgroundColor: ReadingColors.accentSoft,
-    color: ReadingColors.accent,
-    fontSize: 12,
-    fontWeight: '700',
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 14,
+      paddingVertical: 12,
+    },
+    content: {
+      flex: 1,
+      gap: 4,
+    },
+    title: {
+      color: colors.ink,
+      fontSize: 16,
+      fontWeight: '700',
+    },
+    author: {
+      color: colors.muted,
+      fontSize: 14,
+    },
+    progressTrack: {
+      height: 4,
+      marginTop: 6,
+      overflow: 'hidden',
+      borderRadius: 999,
+      backgroundColor: colors.surface,
+    },
+    progressFill: {
+      height: '100%',
+      borderRadius: 999,
+      backgroundColor: colors.accent,
+    },
+    meta: {
+      color: colors.muted,
+      fontSize: 12,
+    },
+    finished: {
+      alignSelf: 'flex-start',
+      marginTop: 4,
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: 999,
+      overflow: 'hidden',
+      backgroundColor: colors.accentSoft,
+      color: colors.accent,
+      fontSize: 12,
+      fontWeight: '700',
+    },
+  });

@@ -1,7 +1,7 @@
 import { BookOpen } from 'lucide-react-native';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-import { ReadingColors } from '@/constants/theme';
+import { BrandColors } from '@/constants/theme';
 import type { ReadingDay } from '@/reading/types';
 import { formatDuration, formatPace } from '@/reading/utils/functions';
 import type { StickerTemplate } from '@/share/types';
@@ -35,13 +35,13 @@ export function ShareSticker({ day, template, photoUri, width }: ShareStickerPro
       <View style={[styles.metrics, { gap: 18 * scale }]}>
         {metrics.map((metric) => (
           <View key={metric.label} style={styles.metric}>
-            <Text style={[styles.label, { color: ReadingColors.accent, fontSize: 15 * scale }, template === 'photo' ? styles.shadow : undefined]}>
+            <Text style={[styles.label, { color: BrandColors.accent, fontSize: 15 * scale }, template === 'photo' ? styles.shadow : undefined]}>
               {metric.label}
             </Text>
             <Text
               style={[
                 styles.value,
-                { color: ReadingColors.white, fontSize: 38 * scale, lineHeight: 44 * scale },
+                { color: BrandColors.white, fontSize: 38 * scale, lineHeight: 44 * scale },
                 template === 'photo' ? styles.shadow : undefined,
               ]}>
               {metric.value}
@@ -49,7 +49,7 @@ export function ShareSticker({ day, template, photoUri, width }: ShareStickerPro
           </View>
         ))}
         <View style={{ marginTop: 10 * scale }}>
-          <BookOpen size={44 * scale} color={ReadingColors.accent} strokeWidth={2.4} />
+          <BookOpen size={44 * scale} color={BrandColors.accent} strokeWidth={2.4} />
         </View>
       </View>
     </View>

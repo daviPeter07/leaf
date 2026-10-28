@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Stat = {
   label: string;
@@ -15,6 +16,8 @@ type StatRowProps = {
 };
 
 export function StatRow({ stats, size = 'regular' }: StatRowProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View style={styles.row}>
       {stats.map((stat, index) => (
@@ -33,36 +36,37 @@ export function StatRow({ stats, size = 'regular' }: StatRowProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-  divider: {
-    width: StyleSheet.hairlineWidth,
-    marginHorizontal: 14,
-    backgroundColor: ReadingColors.line,
-  },
-  item: {
-    flex: 1,
-    gap: 2,
-  },
-  label: {
-    color: ReadingColors.muted,
-    fontSize: 12,
-  },
-  value: {
-    color: ReadingColors.ink,
-    fontSize: 18,
-    fontWeight: '700',
-    fontVariant: ['tabular-nums'],
-  },
-  valueLarge: {
-    fontSize: 24,
-  },
-  unit: {
-    color: ReadingColors.muted,
-    fontSize: 13,
-    fontWeight: '500',
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    row: {
+      flexDirection: 'row',
+      alignItems: 'stretch',
+    },
+    divider: {
+      width: StyleSheet.hairlineWidth,
+      marginHorizontal: 14,
+      backgroundColor: colors.line,
+    },
+    item: {
+      flex: 1,
+      gap: 2,
+    },
+    label: {
+      color: colors.muted,
+      fontSize: 12,
+    },
+    value: {
+      color: colors.ink,
+      fontSize: 18,
+      fontWeight: '700',
+      fontVariant: ['tabular-nums'],
+    },
+    valueLarge: {
+      fontSize: 24,
+    },
+    unit: {
+      color: colors.muted,
+      fontSize: 13,
+      fontWeight: '500',
+    },
+  });

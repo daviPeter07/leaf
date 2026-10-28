@@ -9,11 +9,15 @@ import { ScreenHeader } from '@/components/app/screen-header';
 import { ActivityCard } from '@/reading/components/activity-card';
 import { BookCard } from '@/books/components/book-card';
 import { WeekSummary } from '@/reading/components/week-summary';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useThemedStyles } from '@/hooks/use-theme';
 import { useReadingData } from '@/hooks/use-reading-data';
 import { formatLongDate, getStreak, getWeekSummary } from '@/reading/utils/functions';
 
 export default function HomeScreen() {
+  const styles = useThemedStyles(createStyles);
+  const colors = useColors();
+
   const { activeBook, books, readerName, sessions } = useReadingData();
   const streak = getStreak(sessions);
   const latestSessions = sessions.slice(0, 5);
@@ -26,7 +30,7 @@ export default function HomeScreen() {
           subtitle={formatLongDate(new Date())}
           accessory={
             <View style={styles.streak}>
-              <Flame size={16} color={ReadingColors.accent} strokeWidth={2.5} />
+              <Flame size={16} color={colors.accent} strokeWidth={2.5} />
               <Text style={styles.streakText}>{streak}</Text>
             </View>
           }
@@ -36,7 +40,7 @@ export default function HomeScreen() {
           <EmptyState
             actionLabel="Adicionar livro"
             description="Cadastre o livro que você está lendo para começar a registrar suas leituras."
-            icon={<BookOpen size={28} color={ReadingColors.accent} />}
+            icon={<BookOpen size={28} color={colors.accent} />}
             onAction={() => router.push('/add-book')}
             title="Sua estante está vazia"
           />
@@ -82,41 +86,42 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: ReadingColors.background,
-  },
-  container: {
-    gap: 24,
-    padding: 20,
-    paddingBottom: 32,
-  },
-  streak: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 999,
-    backgroundColor: ReadingColors.accentSoft,
-  },
-  streakText: {
-    color: ReadingColors.accent,
-    fontSize: 15,
-    fontWeight: '800',
-  },
-  section: {
-    gap: 4,
-  },
-  sectionTitle: {
-    color: ReadingColors.ink,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  emptyText: {
-    paddingVertical: 16,
-    color: ReadingColors.muted,
-    fontSize: 15,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    container: {
+      gap: 24,
+      padding: 20,
+      paddingBottom: 32,
+    },
+    streak: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      paddingHorizontal: 12,
+      paddingVertical: 7,
+      borderRadius: 999,
+      backgroundColor: colors.accentSoft,
+    },
+    streakText: {
+      color: colors.accent,
+      fontSize: 15,
+      fontWeight: '800',
+    },
+    section: {
+      gap: 4,
+    },
+    sectionTitle: {
+      color: colors.ink,
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    emptyText: {
+      paddingVertical: 16,
+      color: colors.muted,
+      fontSize: 15,
+    },
+  });

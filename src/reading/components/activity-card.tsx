@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { StatRow } from '@/components/app/stat-row';
-import { ReadingColors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 import type { Book } from '@/books/types';
 import type { ReadingSession } from '@/reading/types';
 import { formatDuration, formatPace, formatSessionTime } from '@/reading/utils/functions';
@@ -13,6 +14,8 @@ type ActivityCardProps = {
 };
 
 export function ActivityCard({ book, readerName, session }: ActivityCardProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -39,51 +42,52 @@ export function ActivityCard({ book, readerName, session }: ActivityCardProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    gap: 12,
-    paddingVertical: 18,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: ReadingColors.line,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  avatar: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 36,
-    height: 36,
-    borderRadius: 999,
-    backgroundColor: ReadingColors.accentSoft,
-  },
-  avatarText: {
-    color: ReadingColors.accent,
-    fontSize: 15,
-    fontWeight: '800',
-  },
-  headerCopy: {
-    flex: 1,
-  },
-  reader: {
-    color: ReadingColors.ink,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  time: {
-    color: ReadingColors.muted,
-    fontSize: 12,
-  },
-  title: {
-    color: ReadingColors.ink,
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  note: {
-    color: ReadingColors.text,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      gap: 12,
+      paddingVertical: 18,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.line,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+    },
+    avatar: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 36,
+      height: 36,
+      borderRadius: 999,
+      backgroundColor: colors.accentSoft,
+    },
+    avatarText: {
+      color: colors.accent,
+      fontSize: 15,
+      fontWeight: '800',
+    },
+    headerCopy: {
+      flex: 1,
+    },
+    reader: {
+      color: colors.ink,
+      fontSize: 14,
+      fontWeight: '700',
+    },
+    time: {
+      color: colors.muted,
+      fontSize: 12,
+    },
+    title: {
+      color: colors.ink,
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    note: {
+      color: colors.text,
+      fontSize: 14,
+      lineHeight: 20,
+    },
+  });

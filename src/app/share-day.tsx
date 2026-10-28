@@ -1,6 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Sharing from 'expo-sharing';
+import { StatusBar } from 'expo-status-bar';
 import { BookOpen, Camera, Image as ImageIcon, Share2, X } from 'lucide-react-native';
 import { type ComponentRef, useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
@@ -8,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
 import { ActionButton } from '@/components/app/action-button';
-import { ReadingColors } from '@/constants/theme';
+import { BrandColors } from '@/constants/theme';
 import { formatDayLabel, getReadingDays } from '@/reading/utils/functions';
 import { ShareSticker } from '@/share/components/share-sticker';
 import type { StickerTemplate } from '@/share/types';
@@ -99,9 +100,10 @@ export default function ShareDayScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="light" />
       <View style={styles.topBar}>
         <TouchableOpacity onPress={() => router.back()} hitSlop={12} accessibilityLabel="Fechar">
-          <X size={26} color={ReadingColors.white} />
+          <X size={26} color={BrandColors.white} />
         </TouchableOpacity>
         <View style={styles.topCopy}>
           <Text style={styles.topTitle}>Compartilhar</Text>
@@ -132,9 +134,9 @@ export default function ShareDayScreen() {
                     isSelected ? styles.templateThumbSelected : undefined,
                   ]}>
                   {item.id === 'photo' ? (
-                    <ImageIcon size={18} color={ReadingColors.white} />
+                    <ImageIcon size={18} color={BrandColors.white} />
                   ) : (
-                    <BookOpen size={18} color={ReadingColors.accent} />
+                    <BookOpen size={18} color={BrandColors.accent} />
                   )}
                 </View>
                 <Text style={[styles.templateLabel, isSelected ? styles.templateLabelSelected : undefined]}>{item.label}</Text>
@@ -146,11 +148,11 @@ export default function ShareDayScreen() {
         {template === 'photo' ? (
           <View style={styles.photoActions}>
             <TouchableOpacity style={styles.photoButton} onPress={takePhoto}>
-              <Camera size={18} color={ReadingColors.white} />
+              <Camera size={18} color={BrandColors.white} />
               <Text style={styles.photoButtonText}>Câmera</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.photoButton} onPress={pickPhoto}>
-              <ImageIcon size={18} color={ReadingColors.white} />
+              <ImageIcon size={18} color={BrandColors.white} />
               <Text style={styles.photoButtonText}>Galeria</Text>
             </TouchableOpacity>
           </View>
@@ -159,7 +161,7 @@ export default function ShareDayScreen() {
         )}
 
         <ActionButton label="Compartilhar" onPress={share}>
-          <Share2 size={18} color={ReadingColors.white} strokeWidth={2.5} />
+          <Share2 size={18} color={BrandColors.white} strokeWidth={2.5} />
         </ActionButton>
       </View>
     </SafeAreaView>
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   topTitle: {
-    color: ReadingColors.white,
+    color: BrandColors.white,
     fontSize: 17,
     fontWeight: '700',
   },
@@ -226,14 +228,14 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   templateThumbSelected: {
-    borderColor: ReadingColors.accent,
+    borderColor: BrandColors.accent,
   },
   templateLabel: {
     color: 'rgba(255, 255, 255, 0.6)',
     fontSize: 12,
   },
   templateLabelSelected: {
-    color: ReadingColors.white,
+    color: BrandColors.white,
     fontWeight: '700',
   },
   photoActions: {
@@ -251,7 +253,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.12)',
   },
   photoButtonText: {
-    color: ReadingColors.white,
+    color: BrandColors.white,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -268,7 +270,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   missingText: {
-    color: ReadingColors.white,
+    color: BrandColors.white,
     fontSize: 17,
     textAlign: 'center',
   },
