@@ -30,7 +30,9 @@ type FormErrors = Partial<Record<keyof ReadingForm, string>>;
 
 export default function LogReadingScreen() {
   const { bookId: routeBookId } = useLocalSearchParams<{ bookId?: string }>();
-  const books = useReadingStore((state) => state.books.filter((book) => !book.finishedAt));
+  // Select the stable array and filter outside: a selector returning a new array loops forever in Zustand 5.
+  const allBooks = useReadingStore((state) => state.books);
+  const books = allBooks.filter((book) => !book.finishedAt);
   const addReading = useReadingStore((state) => state.addReading);
   const initialBook = books.find((book) => book.id === routeBookId) ?? books[0];
   const [bookId, setBookId] = useState(initialBook?.id ?? '');
