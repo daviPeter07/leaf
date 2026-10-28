@@ -4,11 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionButton } from '@/components/app/action-button';
 import { StatRow } from '@/components/app/stat-row';
-import { ActivityCard } from '@/components/reading/activity-card';
-import { BookCover } from '@/components/reading/book-cover';
+import { ActivityCard } from '@/reading/components/activity-card';
+import { BookCover } from '@/books/components/book-cover';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingStore } from '@/store/reading-store';
-import { formatDuration, getBookProgress, getBookTotals } from '@/utils/reading';
+import { getBookProgress, getBookTotals } from '@/books/utils/functions';
+import { formatDuration } from '@/reading/utils/functions';
 
 export default function BookDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

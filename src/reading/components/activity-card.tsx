@@ -2,8 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { StatRow } from '@/components/app/stat-row';
 import { ReadingColors } from '@/constants/theme';
-import type { Book, ReadingSession } from '@/types/reading';
-import { formatDuration, formatPace, formatSessionTime } from '@/utils/reading';
+import type { Book } from '@/books/types';
+import type { ReadingSession } from '@/reading/types';
+import { formatDuration, formatPace, formatSessionTime } from '@/reading/utils/functions';
 
 type ActivityCardProps = {
   book?: Book;

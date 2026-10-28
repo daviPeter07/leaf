@@ -79,14 +79,15 @@ src/
 │   ├── edit-book.tsx       #   e registro de leitura
 │   ├── log-reading.tsx
 │   └── share-day.tsx       # Tela de compartilhamento do status
-├── components/
-│   ├── app/                # UI genérica (botões, cabeçalho, StatRow…)
-│   └── reading/            # Componentes de domínio (cards, sticker…)
+├── books/                  # Módulo de livros: cards, capa, formulário
+├── reading/                # Módulo de leitura: sessões, semana, sequência, ritmo
+├── share/                  # Módulo de status: sticker estilo Strava
+├── tutorial/               # Módulo do onboarding
+│                           # cada módulo: components/ · types/ · utils/{functions,zod,constants}.ts
+├── components/app/         # UI genérica compartilhada
+├── constants/theme.ts      # Paleta global
 ├── store/reading-store.ts  # Zustand: livros, sessões e regras de negócio
-├── utils/reading.ts        # Ritmo, duração, semana, sequência, dias
-├── hooks/                  # Leitura derivada do store
-├── constants/              # Paleta e cores de capa
-└── types/                  # Modelos Book e ReadingSession
+└── hooks/                  # Leitura derivada do store
 ```
 
 ## Como funciona por dentro

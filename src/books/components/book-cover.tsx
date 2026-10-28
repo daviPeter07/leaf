@@ -2,7 +2,7 @@ import { BookOpen } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
 
 import { ReadingColors } from '@/constants/theme';
-import type { Book } from '@/types/reading';
+import type { Book } from '@/books/types';
 
 type BookCoverProps = {
   book: Book;

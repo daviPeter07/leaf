@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/app/empty-state';
 import { ScreenHeader } from '@/components/app/screen-header';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingData } from '@/hooks/use-reading-data';
-import { formatDayLabel, formatDuration, getReadingDays } from '@/utils/reading';
+import { formatDayLabel, formatDuration, getReadingDays } from '@/reading/utils/functions';
 
 export default function ShareScreen() {
   const { books, sessions } = useReadingData();

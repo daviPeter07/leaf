@@ -6,12 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionButton } from '@/components/app/action-button';
 import { EmptyState } from '@/components/app/empty-state';
 import { ScreenHeader } from '@/components/app/screen-header';
-import { ActivityCard } from '@/components/reading/activity-card';
-import { BookCard } from '@/components/reading/book-card';
-import { WeekSummary } from '@/components/reading/week-summary';
+import { ActivityCard } from '@/reading/components/activity-card';
+import { BookCard } from '@/books/components/book-card';
+import { WeekSummary } from '@/reading/components/week-summary';
 import { ReadingColors } from '@/constants/theme';
 import { useReadingData } from '@/hooks/use-reading-data';
-import { formatLongDate, getStreak, getWeekSummary } from '@/utils/reading';
+import { formatLongDate, getStreak, getWeekSummary } from '@/reading/utils/functions';
 
 export default function HomeScreen() {
   const { activeBook, books, readerName, sessions } = useReadingData();

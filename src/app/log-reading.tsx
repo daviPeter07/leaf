@@ -4,29 +4,16 @@ import { BookOpen } from 'lucide-react-native';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { z } from 'zod';
 
 import { ActionButton } from '@/components/app/action-button';
 import { EmptyState } from '@/components/app/empty-state';
 import { KeyboardAwareScrollView } from '@/components/app/keyboard-aware-scroll-view';
-import { FormField } from '@/components/reading/form-field';
+import { FormField } from '@/components/app/form-field';
 import { ReadingColors } from '@/constants/theme';
+import { readingSchema, type ReadingFormData } from '@/reading/utils/zod';
 import { useReadingStore } from '@/store/reading-store';
 
-const readingSchema = z.object({
-  bookId: z.string().min(1, 'Escolha um livro.'),
-  fromPage: z.coerce.number().int().min(0, 'Informe a página inicial.'),
-  toPage: z.coerce.number().int().min(1, 'Informe a página final.'),
-  minutesRead: z.coerce.number().int().min(1, 'Informe o tempo de leitura.'),
-  chapter: z.coerce.number().int().min(1, 'Informe o capítulo.'),
-  note: z.string().trim().optional(),
-}).refine((value) => value.toPage > value.fromPage, {
-  path: ['toPage'],
-  message: 'A página final precisa ser maior que a inicial.',
-});
-
-type ReadingForm = z.infer<typeof readingSchema>;
-type FormErrors = Partial<Record<keyof ReadingForm, string>>;
+type FormErrors = Partial<Record<keyof ReadingFormData, string>>;
 
 export default function LogReadingScreen() {
   const { bookId: routeBookId } = useLocalSearchParams<{ bookId?: string }>();
