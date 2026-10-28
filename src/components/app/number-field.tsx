@@ -3,6 +3,7 @@ import { Minus, Plus } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 
+import { useScrollToFocusedInput } from '@/components/app/keyboard-aware-scroll-view';
 import type { Palette } from '@/constants/theme';
 import { useColors, useThemedStyles } from '@/hooks/use-theme';
 
@@ -45,6 +46,7 @@ export function NumberField({
 }: NumberFieldProps) {
   const styles = useThemedStyles(createStyles);
   const colors = useColors();
+  const scrollToFocusedInput = useScrollToFocusedInput();
 
   const parsed = Number.parseInt(value, 10);
   const current = Number.isNaN(parsed) ? (baseValue ?? min) : parsed;
@@ -80,6 +82,7 @@ export function NumberField({
             placeholder={placeholder}
             placeholderTextColor={colors.muted}
             selectTextOnFocus
+            onFocus={scrollToFocusedInput}
             style={styles.input}
           />
           {unit ? <Text style={styles.unit}>{unit}</Text> : null}

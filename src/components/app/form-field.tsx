@@ -1,5 +1,6 @@
 import { StyleProp, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 
+import { useScrollToFocusedInput } from '@/components/app/keyboard-aware-scroll-view';
 import type { Palette } from '@/constants/theme';
 import { useColors, useThemedStyles } from '@/hooks/use-theme';
 
@@ -9,9 +10,10 @@ type FormFieldProps = TextInputProps & {
   containerStyle?: StyleProp<ViewStyle>;
 };
 
-export function FormField({ label, error, style, containerStyle, ...props }: FormFieldProps) {
+export function FormField({ label, error, style, containerStyle, onFocus, ...props }: FormFieldProps) {
   const styles = useThemedStyles(createStyles);
   const colors = useColors();
+  const scrollToFocusedInput = useScrollToFocusedInput();
 
   return (
     <View style={[styles.wrapper, containerStyle]}>
@@ -20,6 +22,10 @@ export function FormField({ label, error, style, containerStyle, ...props }: For
         placeholderTextColor={colors.muted}
         style={[styles.input, error ? styles.inputError : undefined, style]}
         {...props}
+        onFocus={(event) => {
+          scrollToFocusedInput();
+          onFocus?.(event);
+        }}
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
