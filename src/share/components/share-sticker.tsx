@@ -14,10 +14,9 @@ type ShareStickerProps = {
 };
 
 // Story-sized (9:16) overlay with the day's metrics stacked in the centre, Strava style.
-// Only the "photo" template paints a background; the others export as a transparent sticker.
+// Only the "photo" template paints a background; "sticker" exports transparent. Labels and the book icon are orange, values are white.
 export function ShareSticker({ day, template, photoUri, width }: ShareStickerProps) {
   const scale = width / 320;
-  const color = template === 'dark' ? ReadingColors.ink : ReadingColors.white;
   const metrics = [
     { label: 'Páginas', value: `${day.pages}` },
     { label: 'Ritmo', value: `${formatPace(day.minutes, day.pages)} /pág` },
@@ -36,13 +35,13 @@ export function ShareSticker({ day, template, photoUri, width }: ShareStickerPro
       <View style={[styles.metrics, { gap: 18 * scale }]}>
         {metrics.map((metric) => (
           <View key={metric.label} style={styles.metric}>
-            <Text style={[styles.label, { color, fontSize: 15 * scale }, template === 'photo' ? styles.shadow : undefined]}>
+            <Text style={[styles.label, { color: ReadingColors.accent, fontSize: 15 * scale }, template === 'photo' ? styles.shadow : undefined]}>
               {metric.label}
             </Text>
             <Text
               style={[
                 styles.value,
-                { color, fontSize: 38 * scale, lineHeight: 44 * scale },
+                { color: ReadingColors.white, fontSize: 38 * scale, lineHeight: 44 * scale },
                 template === 'photo' ? styles.shadow : undefined,
               ]}>
               {metric.value}
@@ -50,7 +49,7 @@ export function ShareSticker({ day, template, photoUri, width }: ShareStickerPro
           </View>
         ))}
         <View style={{ marginTop: 10 * scale }}>
-          <BookOpen size={44 * scale} color={color} strokeWidth={2.4} />
+          <BookOpen size={44 * scale} color={ReadingColors.accent} strokeWidth={2.4} />
         </View>
       </View>
     </View>

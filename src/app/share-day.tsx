@@ -132,9 +132,9 @@ export default function ShareDayScreen() {
                     isSelected ? styles.templateThumbSelected : undefined,
                   ]}>
                   {item.id === 'photo' ? (
-                    <ImageIcon size={18} color={item.iconColor} />
+                    <ImageIcon size={18} color={ReadingColors.white} />
                   ) : (
-                    <BookOpen size={18} color={item.iconColor} />
+                    <BookOpen size={18} color={ReadingColors.accent} />
                   )}
                 </View>
                 <Text style={[styles.templateLabel, isSelected ? styles.templateLabelSelected : undefined]}>{item.label}</Text>
