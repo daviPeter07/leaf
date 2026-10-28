@@ -6,6 +6,7 @@ import { BookCover } from '@/books/components/book-cover';
 import type { BookSearchResult } from '@/books/types';
 import { BOOK_SEARCH_DEBOUNCE_MS, BOOK_SEARCH_MIN_LENGTH } from '@/books/utils/constants';
 import { searchBooks } from '@/books/utils/functions';
+import { useScrollToFocusedInput } from '@/components/app/keyboard-aware-scroll-view';
 import type { Palette } from '@/constants/theme';
 import { useColors, useThemedStyles } from '@/hooks/use-theme';
 
@@ -20,6 +21,7 @@ type SearchState =
 export function BookSearch({ onSelect }: BookSearchProps) {
   const styles = useThemedStyles(createStyles);
   const colors = useColors();
+  const scrollToFocusedInput = useScrollToFocusedInput();
   const [query, setQuery] = useState('');
   const [search, setSearch] = useState<SearchState | null>(null);
   const trimmed = query.trim();
@@ -66,6 +68,7 @@ export function BookSearch({ onSelect }: BookSearchProps) {
           placeholder="Título, autor ou os dois juntos"
           placeholderTextColor={colors.muted}
           returnKeyType="search"
+          onFocus={scrollToFocusedInput}
           autoCorrect={false}
           style={styles.input}
         />
