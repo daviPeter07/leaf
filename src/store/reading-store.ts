@@ -6,13 +6,14 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { AddBookInput, Book, UpdateBookInput } from '@/books/types';
 import { COVER_PAIRS } from '@/books/utils/constants';
 import { createId } from '@/books/utils/functions';
-import type { ThemePreference } from '@/constants/theme';
+import type { AccentColor, ThemePreference } from '@/constants/theme';
 import type { AddReadingInput, ReadingSession } from '@/reading/types';
 
 type ReadingState = {
   readerName: string;
   hasSeenTutorial: boolean;
   themePreference: ThemePreference;
+  accentColor: AccentColor;
   books: Book[];
   sessions: ReadingSession[];
   addBook: (input: AddBookInput) => void;
@@ -22,6 +23,7 @@ type ReadingState = {
   finishBook: (bookId: string) => void;
   completeTutorial: () => void;
   setThemePreference: (preference: ThemePreference) => void;
+  setAccentColor: (accentColor: AccentColor) => void;
 };
 
 export const useReadingStore = create<ReadingState>()(
@@ -30,6 +32,7 @@ export const useReadingStore = create<ReadingState>()(
       readerName: 'Alice',
       hasSeenTutorial: false,
       themePreference: 'system',
+      accentColor: 'orange',
       books: [],
       sessions: [],
       addBook: ({ title, author, totalPages, chapters, currentPage = 0, coverUrl }) => {
@@ -155,6 +158,9 @@ export const useReadingStore = create<ReadingState>()(
       },
       setThemePreference: (themePreference) => {
         set({ themePreference });
+      },
+      setAccentColor: (accentColor) => {
+        set({ accentColor });
       },
     }),
     {
