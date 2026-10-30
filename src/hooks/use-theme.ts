@@ -1,6 +1,6 @@
 import { useColorScheme } from 'react-native';
 
-import { DarkColors, LightColors, type Palette } from '@/constants/theme';
+import { getPalette, type Palette } from '@/constants/theme';
 import { useReadingStore } from '@/store/reading-store';
 
 export function useIsDark() {
@@ -11,7 +11,10 @@ export function useIsDark() {
 }
 
 export function useColors(): Palette {
-  return useIsDark() ? DarkColors : LightColors;
+  const isDark = useIsDark();
+  const accentColor = useReadingStore((state) => state.accentColor);
+
+  return getPalette(isDark, accentColor);
 }
 
 const styleCache = new WeakMap<object, WeakMap<Palette, unknown>>();

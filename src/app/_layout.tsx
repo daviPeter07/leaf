@@ -5,8 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { DarkColors, LightColors, type Palette } from '@/constants/theme';
-import { useIsDark } from '@/hooks/use-theme';
+import type { Palette } from '@/constants/theme';
+import { useColors, useIsDark } from '@/hooks/use-theme';
 import { useReadingStore, useReadingStoreHydrated } from '@/store/reading-store';
 
 export const unstable_settings = {
@@ -29,14 +29,11 @@ function navigationTheme(base: typeof DefaultTheme, colors: Palette) {
   };
 }
 
-const lightTheme = navigationTheme(DefaultTheme, LightColors);
-const darkTheme = navigationTheme(DarkTheme, DarkColors);
-
 export default function RootLayout() {
   const hydrated = useReadingStoreHydrated();
   const hasSeenTutorial = useReadingStore((state) => state.hasSeenTutorial);
   const isDark = useIsDark();
-  const colors = isDark ? DarkColors : LightColors;
+  const colors = useColors();
 
   useEffect(() => {
     if (hydrated) {
@@ -50,7 +47,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDark ? darkTheme : lightTheme}>
+    <ThemeProvider value={navigationTheme(isDark ? DarkTheme : DefaultTheme, colors)}>
       <Stack
         screenOptions={{
           headerShadowVisible: false,
