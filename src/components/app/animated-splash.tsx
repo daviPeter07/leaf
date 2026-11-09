@@ -102,7 +102,7 @@ export function AnimatedSplash({ onFinish }: AnimatedSplashProps) {
     return () => cancelAnimationFrame(frame);
   }, [onFinish]);
 
-  const size = Math.min(width * 0.62, 280);
+  const size = Math.min(width * 0.68, 300);
   const book = easeInOut(progress(elapsed, 0, BOOK_DURATION));
   const nib = nibPosition(elapsed);
   const fade = easeInOut(progress(elapsed, FADE_START, FADE_DURATION));
@@ -110,7 +110,8 @@ export function AnimatedSplash({ onFinish }: AnimatedSplashProps) {
   return (
     <View style={[styles.overlay, { opacity: 1 - fade }]} pointerEvents={fade > 0 ? 'none' : 'auto'}>
       <View style={{ transform: [{ scale: 1 + fade * 0.08 }] }}>
-        <Svg width={size} height={(size * 70) / 92} viewBox="10 16 92 70">
+        {/* Centred on the book (x = 50), like the icons, with room for the leaf on the right. */}
+        <Svg width={size} height={(size * 70) / 100} viewBox="0 16 100 70">
           <G stroke={BrandColors.white} strokeLinecap="round" strokeLinejoin="round" fill="none">
             <Path d={BOOK} strokeWidth={4.5} strokeDasharray={[BOOK_LENGTH, BOOK_LENGTH]} strokeDashoffset={BOOK_LENGTH * (1 - book)} />
             {book > 0.5 ? (
