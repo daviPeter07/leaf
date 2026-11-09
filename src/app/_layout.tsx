@@ -2,9 +2,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router/react-naviga
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
+import { AnimatedSplash } from '@/components/app/animated-splash';
 import type { Palette } from '@/constants/theme';
 import { useColors, useIsDark } from '@/hooks/use-theme';
 import { useReadingStore, useReadingStoreHydrated } from '@/store/reading-store';
@@ -34,6 +35,7 @@ export default function RootLayout() {
   const hasSeenTutorial = useReadingStore((state) => state.hasSeenTutorial);
   const isDark = useIsDark();
   const colors = useColors();
+  const [isSplashDone, setIsSplashDone] = useState(false);
 
   useEffect(() => {
     if (hydrated) {
@@ -67,7 +69,8 @@ export default function RootLayout() {
           <Stack.Screen name="tutorial" options={{ headerShown: false, animation: 'fade' }} />
         </Stack.Protected>
       </Stack>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <StatusBar style={isDark || !isSplashDone ? 'light' : 'dark'} />
+      {isSplashDone ? null : <AnimatedSplash onFinish={() => setIsSplashDone(true)} />}
     </ThemeProvider>
   );
 }
